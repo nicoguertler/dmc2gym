@@ -102,6 +102,9 @@ class DMCWrapper(core.Env):
         self.ax = None
         self.axim = None
 
+        # maximum episode length
+        self.max_episode_length = self._env._step_limit
+
     def __getattr__(self, name):
         return getattr(self._env, name)
 
