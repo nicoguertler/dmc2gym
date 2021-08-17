@@ -50,3 +50,6 @@ def make(
             max_episode_steps=max_episode_steps,
         )
     return gym.make(env_id)
+
+# register ball in cup environment
+make(domain_name='ball_in_cup', task_name='catch', seed=1234)
