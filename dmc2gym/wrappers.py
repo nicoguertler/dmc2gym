@@ -2,6 +2,8 @@ from gym import core, spaces
 from dm_control import suite
 from dm_env import specs
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import animation
 
 
 def _spec_to_box(spec):
@@ -95,6 +97,11 @@ class DMCWrapper(core.Env):
         # set seed
         self.seed(seed=task_kwargs.get('random', 1))
 
+        # for rendering with matplotlib
+        self.fig = None
+        self.ax = None
+        self.axim = None
+
     def __getattr__(self, name):
         return getattr(self._env, name)
 
@@ -162,10 +169,21 @@ class DMCWrapper(core.Env):
         return obs
 
     def render(self, mode='rgb_array', height=None, width=None, camera_id=0):
-        assert mode == 'rgb_array', 'only support rgb_array mode, given %s' % mode
         height = height or self._height
         width = width or self._width
         camera_id = camera_id or self._camera_id
-        return self._env.physics.render(
+
+        array = self._env.physics.render(
             height=height, width=width, camera_id=camera_id
         )
+        if mode == "human":
+            if self.fig is None:
+                plt.ion()
+                self.fig, self.ax = plt.subplots()
+                self.axim = self.ax.imshow(array)
+            else:
+                self.axim.set_data(array)
+                self.fig.canvas.flush_events()
+                plt.draw()
+        else:
+            return array
