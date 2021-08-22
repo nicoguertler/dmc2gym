@@ -53,3 +53,5 @@ def make(
 
 # register ball in cup environment
 make(domain_name='ball_in_cup', task_name='catch', seed=1234)
+# register spinner taks on finger environment
+make(domain_name='finger', task_name='spin', seed=2345)

@@ -1,0 +1,4 @@
+*.swp
+*__pycache__*
+*.pyc
+dmc2gym.egg-info
